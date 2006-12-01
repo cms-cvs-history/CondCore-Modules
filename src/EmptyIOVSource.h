@@ -2,8 +2,8 @@
 #define CondCore_Modules_EmptyIOVSource_h
 
 #include "FWCore/Framework/interface/ConfigurableInputSource.h"
+#include "CondCore/DBCommon/interface/Time.h"
 #include <set>
-
 namespace cond {
   class EmptyIOVSource : public edm::ConfigurableInputSource {
   public:
@@ -18,9 +18,9 @@ namespace cond {
     unsigned long long m_lastValid;
     unsigned long long m_currentValid;
     unsigned long long m_interval;
-    std::set<unsigned long long> m_iovs;
-    std::set<unsigned long long>::iterator m_iovit;
-    std::set<unsigned long long>::iterator m_iovstop;
+    std::set<cond::Time_t> m_iovs;
+    std::set<cond::Time_t>::iterator m_iovit;
+    std::set<cond::Time_t>::iterator m_iovstop;
   };
 }
 #endif

@@ -13,7 +13,7 @@ namespace cond{
 				 edm::InputSourceDescription const& desc):
     edm::ConfigurableInputSource(pset,desc),
     m_timeType(pset.getParameter<std::string>("timetype")),
-    m_interval((unsigned long long)pset.getParameter<unsigned int>("interval")){
+    m_interval((cond::Time_t)pset.getParameter<unsigned int>("interval")){
     unsigned int lastValid;
     if( m_timeType=="runnumber" ){
       m_firstValid=pset.getUntrackedParameter<unsigned int>("firstRun",1);
@@ -25,26 +25,26 @@ namespace cond{
       }
     }else{
       m_firstValid=pset.getUntrackedParameter<unsigned int>("firstTime",0);
-      lastValid=(unsigned long long)pset.getUntrackedParameter<unsigned int>("lastTime",0);
+      lastValid=(cond::Time_t)pset.getUntrackedParameter<unsigned int>("lastTime",0);
       if(lastValid==0){
 	m_lastValid=edm::IOVSyncValue::endOfTime().time().value();
       }else{
 	m_lastValid=lastValid;
       }
     }
-    for(unsigned int i=(unsigned long long)m_firstValid; i<=m_lastValid; i+=(unsigned long long)m_interval){
+    for(cond::Time_t i=(cond::Time_t)m_firstValid; i<=m_lastValid; i+=(cond::Time_t)m_interval){
       m_iovs.insert(i);
     }
     if(m_firstValid==0){
       m_iovit=m_iovs.begin();
     }else{
-      std::set<unsigned long long>::iterator startpos=m_iovs.lower_bound((unsigned long long)m_firstValid);
+      std::set<cond::Time_t>::iterator startpos=m_iovs.lower_bound((cond::Time_t)m_firstValid);
       m_iovit=startpos;
     }
     if(m_lastValid==0){
       m_iovstop=m_iovs.end();
     }else{
-      std::set<unsigned long long>::iterator stoppos=m_iovs.upper_bound((unsigned long long)m_lastValid);
+      std::set<cond::Time_t>::iterator stoppos=m_iovs.upper_bound((cond::Time_t)m_lastValid);
       m_iovstop=stoppos;
     }
   }
